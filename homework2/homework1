@@ -1,0 +1,13 @@
+mkdir rau
+cd rau
+mkdir rau_0
+mkdir rau_1
+cd rau_1
+touch simple
+ls
+cd ..
+ds rau_0
+mv simple/home/sophia/rau/rau_1
+cd ..
+cd ..
+rm -rf rau
