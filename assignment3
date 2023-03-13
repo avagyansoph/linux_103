@@ -2,8 +2,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 int i = 0;
-// pipe p1 p2 p3
+
 int main(int argc, char** argv)
 {
     //fd[0][0] - pipe 1->2 read
