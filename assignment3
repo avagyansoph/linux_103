@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+int i = 0;
+// pipe p1 p2 p3
+int main(int argc, char** argv)
+{
+    //fd[0][0] - pipe 1->2 read
+    //fd[0][1] - pipe 1->2 write
+    //fd[1][0] - pipe 2->3 read
+    //fd[1][1] - pipe 2->3 write
+    //fd[2][0] - pipe 3->4 read
+    //fd[2][1] - pipe 3->4 write
+    //...
+    //fd[n-2][0] - pipe n-1->n read
+    //fd[n-2][1] - pipe n-1->n write
+
+    int n = argv[1];
+    pid_t p[n];
+
+    int fd[n-1][2]; 
+
+    for(; i < n; ++i){
+        p[i]=fork(); 
+        if(p[i]==0){
+           for(int k =0; k<n ; ++k){
+            for(int l= 0 ;l< 2; ++l){
+                if(k==i-1 && l=0 && i!=0){
+                    dup2(fd[k][l], STDIN_FILENO);
+                }
+                else if(k==i && l==1 && i!=n-2){
+                   dup2(fd[k][l], STDOUT_FILENO); 
+                }
+                else close fd[k][l];
+            }
+           }
+        }
+    }
+    
+    for(int k =0; k<n ; ++k){
+        for(int l= 0 ;l< 2; ++l){
+            close(fd[k][l]);
+        }
+    }
+    for(int q=0;q<n;++q) waitpid(p[i],NULL, 0);
+    return 0;
+}
